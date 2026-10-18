@@ -1,835 +1,541 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Happy Vietnamese Women's Day 20/10 💐</title>
-  
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Mali:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg-gradient-1: linear-gradient(135deg, #ffeef2 0%, #f3e7e9 50%, #e3eeff 100%);
-      --bg-gradient-2: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 50%, #e8eaf6 100%);
-      --primary-color: #ff758c;
-      --accent-color: #ff7eb3;
-      --text-main: #5c3c46;
-      --paper-bg: #fffdfa;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    body {
-      font-family: 'Mali', cursive;
-      min-height: 100vh;
-      width: 100vw;
-      overflow: hidden;
-      background: var(--bg-gradient-1);
-      transition: background 1.5s ease;
-      position: relative;
-      color: var(--text-main);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* Canvas Hiệu Ứng Nền (Hoa, Bong bóng, Sparkle) */
-    #particleCanvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    /* Container Tên Người Nhận Bay Ngược Như Mưa (Nằm phía sau phong thư & lá thư) */
-    #nameRainContainer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 5; /* Phía sau thư (z-index 20/30) */
-      overflow: hidden;
-    }
-
-    .floating-name {
-      position: absolute;
-      bottom: -40px;
-      font-family: 'Mali', cursive;
-      font-weight: 600;
-      color: #ffb6c1;
-      text-shadow: 0 0 8px rgba(255, 182, 193, 0.6), 0 0 15px rgba(255, 255, 255, 0.8);
-      white-space: nowrap;
-      pointer-events: none;
-      will-change: transform, opacity;
-      animation: floatUpName linear forwards;
-    }
-
-    @keyframes floatUpName {
-      0% {
-        transform: translateY(0) translateX(0) rotate(0deg);
-        opacity: 0;
-      }
-      10% {
-        opacity: var(--max-opacity, 0.6);
-      }
-      80% {
-        opacity: var(--max-opacity, 0.6);
-      }
-      100% {
-        transform: translateY(-115vh) translateX(var(--sway-x, 20px)) rotate(var(--rot-deg, 10deg));
-        opacity: 0;
-      }
-    }
-
-    /* Nút Bật/Tắt Âm Nhạc */
-    .audio-btn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 100;
-      background: rgba(255, 255, 255, 0.85);
-      border: 2px solid #ffccd5;
-      border-radius: 50%;
-      width: 44px;
-      height: 44px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(255, 182, 193, 0.4);
-      font-size: 1.2rem;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(5px);
-    }
-    .audio-btn:hover {
-      transform: scale(1.1);
-    }
-
-    /* Layout Màn Hình */
-    .screen {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 10;
-      transition: opacity 0.8s ease, transform 0.8s ease, filter 0.8s ease;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .screen.hidden {
-      opacity: 0;
-      pointer-events: none;
-      transform: scale(0.95);
-      filter: blur(4px);
-    }
-
-    /* MÀN HÌNH 1: BẮT ĐẦU */
-    .welcome-card {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      padding: 35px 25px;
-      border-radius: 28px;
-      box-shadow: 0 15px 35px rgba(255, 154, 162, 0.2), inset 0 0 0 2px rgba(255, 255, 255, 0.9);
-      max-width: 420px;
-      width: 100%;
-      position: relative;
-      animation: gentleFloat 4s ease-in-out infinite alternate;
-    }
-
-    @keyframes gentleFloat {
-      0% { transform: translateY(0px); }
-      100% { transform: translateY(-10px); }
-    }
-
-    .title-main {
-      font-size: 1.45rem;
-      font-weight: 700;
-      color: #ff477e;
-      margin-bottom: 12px;
-      text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-      line-height: 1.35;
-    }
-
-    .subtitle {
-      font-size: 0.95rem;
-      color: #7d5a68;
-      margin-bottom: 25px;
-    }
-
-    .input-box {
-      width: 100%;
-      padding: 14px 20px;
-      border: 2px solid #ffccd5;
-      border-radius: 20px;
-      outline: none;
-      font-family: 'Mali', cursive;
-      font-size: 1.05rem;
-      text-align: center;
-      color: #ff477e;
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.03);
-      transition: all 0.3s ease;
-      margin-bottom: 20px;
-    }
-
-    .input-box::placeholder {
-      color: #ffb3c1;
-    }
-
-    .input-box:focus {
-      border-color: #ff477e;
-      box-shadow: 0 0 12px rgba(255, 71, 126, 0.25);
-    }
-
-    .btn-start {
-      background: linear-gradient(45deg, #ff758c, #ff7eb3);
-      color: white;
-      border: none;
-      padding: 14px 35px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      border-radius: 25px;
-      cursor: pointer;
-      font-family: 'Mali', cursive;
-      box-shadow: 0 8px 20px rgba(255, 117, 140, 0.4);
-      transition: all 0.3s ease;
-      width: 100%;
-    }
-
-    .btn-start:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 12px 25px rgba(255, 117, 140, 0.5);
-    }
-
-    /* MÀN HÌNH 2: PHONG THƯ */
-    .screen-envelope-title {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: #d81b60;
-      margin-bottom: 25px;
-      text-shadow: 0 2px 10px rgba(255, 255, 255, 0.9);
-      background: rgba(255, 255, 255, 0.65);
-      padding: 8px 22px;
-      border-radius: 20px;
-      backdrop-filter: blur(5px);
-    }
-
-    .envelope-container {
-      position: relative;
-      width: 290px;
-      height: 190px;
-      cursor: pointer;
-      perspective: 1000px;
-      margin-bottom: 25px;
-      z-index: 20;
-    }
-
-    .envelope-wrapper {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      background: #fff8f0;
-      border-radius: 12px;
-      box-shadow: 0 15px 35px rgba(216, 27, 96, 0.15), 0 5px 15px rgba(0, 0, 0, 0.05);
-      animation: floatEnvelope 3.5s ease-in-out infinite alternate;
-      border: 1px solid #ffe3e8;
-    }
-
-    @keyframes floatEnvelope {
-      0% { transform: translateY(0) rotate(-1deg); }
-      100% { transform: translateY(-12px) rotate(1deg); }
-    }
-
-    /* Nắp phong thư 3D */
-    .envelope-flap {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 0;
-      height: 0;
-      border-left: 145px solid transparent;
-      border-right: 145px solid transparent;
-      border-top: 105px solid #ffe3eb;
-      transform-origin: top center;
-      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 4;
-      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.06));
-    }
-
-    /* Thân phong thư */
-    .envelope-pocket {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 0;
-      border-left: 145px solid #ffd6e0;
-      border-right: 145px solid #ffd6e0;
-      border-bottom: 100px solid #ffc2d1;
-      border-radius: 0 0 12px 12px;
-      z-index: 3;
-    }
-
-    .envelope-seal {
-      position: absolute;
-      top: 90px;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 44px;
-      height: 44px;
-      background: linear-gradient(45deg, #ff477e, #ff758c);
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-size: 1.2rem;
-      box-shadow: 0 4px 10px rgba(255, 71, 126, 0.4);
-      z-index: 5;
-      transition: transform 0.4s ease, opacity 0.4s ease;
-    }
-
-    /* Trang trí phong thư */
-    .env-decor {
-      position: absolute;
-      font-size: 1.3rem;
-      z-index: 6;
-      pointer-events: none;
-    }
-    .env-decor-1 { top: -10px; left: -10px; transform: rotate(-15deg); }
-    .env-decor-2 { bottom: 5px; right: -5px; transform: rotate(15deg); }
-    .env-decor-3 { top: 10px; right: 10px; font-size: 1rem; }
-
-    /* Mẫu thư rút ra từ phong thư */
-    .paper-preview {
-      position: absolute;
-      bottom: 10px;
-      left: 20px;
-      right: 20px;
-      height: 150px;
-      background: var(--paper-bg);
-      border-radius: 8px;
-      z-index: 2;
-      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      padding: 15px;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
-
-    .click-hint {
-      font-size: 0.95rem;
-      color: #ff477e;
-      font-weight: 600;
-      animation: pulseText 1.5s infinite;
-      background: rgba(255, 255, 255, 0.8);
-      padding: 6px 18px;
-      border-radius: 15px;
-    }
-
-    @keyframes pulseText {
-      0%, 100% { opacity: 0.7; transform: scale(0.98); }
-      50% { opacity: 1; transform: scale(1.03); }
-    }
-
-    /* ANIMATION MỞ THƯ */
-    .envelope-container.open .envelope-flap {
-      transform: rotateX(180deg);
-      z-index: 1;
-    }
-
-    .envelope-container.open .envelope-seal {
-      opacity: 0;
-      transform: translate(-50%, -50%) scale(0.5);
-    }
-
-    .envelope-container.open .paper-preview {
-      transform: translateY(-120px);
-      z-index: 4;
-    }
-
-    /* LÁ THƯ CHÍNH (MODAL) */
-    .letter-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(92, 60, 70, 0.35);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      z-index: 30;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.6s ease;
-      padding: 20px;
-    }
-
-    .letter-modal.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .letter-paper {
-      background: var(--paper-bg);
-      width: 100%;
-      max-width: 460px;
-      max-height: 85vh;
-      border-radius: 24px;
-      padding: 35px 28px;
-      box-shadow: 0 20px 50px rgba(255, 117, 140, 0.25), inset 0 0 0 8px #fff0f3;
-      position: relative;
-      overflow-y: auto;
-      transform: scale(0.8) translateY(30px);
-      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-      border: 2px solid #ffe3e8;
-    }
-
-    .letter-modal.active .letter-paper {
-      transform: scale(1) translateY(0);
-    }
-
-    .letter-corner {
-      position: absolute;
-      font-size: 1.6rem;
-      pointer-events: none;
-      z-index: 2;
-    }
-    .corner-tl { top: 12px; left: 12px; }
-    .corner-tr { top: 12px; right: 12px; }
-    .corner-bl { bottom: 12px; left: 12px; }
-    .corner-br { bottom: 12px; right: 12px; }
-
-    .letter-title {
-      font-family: 'Dancing Script', cursive;
-      font-size: 2.1rem;
-      color: #ff477e;
-      text-align: center;
-      margin-bottom: 20px;
-      font-weight: 700;
-    }
-
-    .letter-body {
-      font-size: 0.98rem;
-      line-height: 1.8;
-      color: #4a353d;
-      text-align: justify;
-      white-space: pre-line;
-      margin-bottom: 25px;
-    }
-
-    .letter-footer {
-      text-align: center;
-      font-size: 1.05rem;
-      color: #ff477e;
-      font-weight: 600;
-    }
-
-    /* Confetti Canvas */
-    #confettiCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      pointer-events: none;
-      z-index: 40;
-    }
-
-    @media (max-width: 480px) {
-      .welcome-card { padding: 28px 20px; }
-      .title-main { font-size: 1.3rem; }
-      .envelope-container { transform: scale(0.9); }
-      .letter-paper { padding: 28px 20px; }
-      .letter-title { font-size: 1.8rem; }
-      .letter-body { font-size: 0.92rem; line-height: 1.7; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Món Quà 20/10 Dành Cho Bạn 🌸</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Dancing+Script:wght@600;700&family=Mali:ital,wght@0,400;0,600;0,700;1,500&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS File -->
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="flex items-center justify-center min-h-screen p-4 relative">
 
-  <!-- Nút Âm Nhạc -->
-  <button class="audio-btn" id="audioBtn" title="Bật/Tắt nhạc">🎵</button>
+    <!-- Interactive Particle Simulation Canvas -->
+    <canvas id="particleCanvas"></canvas>
 
-  <!-- Canvas Bong bóng, Hoa rơi, Sparkle -->
-  <canvas id="particleCanvas"></canvas>
+    <!-- Container cho Mưa Tên Người Nhận -->
+    <div id="nameRainContainer"></div>
 
-  <!-- Container Chữ Tên Bay Lơ Lửng Phía Sau -->
-  <div id="nameRainContainer"></div>
+    <!-- Audio Control Floating Button -->
+    <button id="musicToggleBtn" onclick="toggleAudio()" class="fixed top-5 right-5 z-50 bg-white/80 backdrop-blur-md p-3.5 rounded-full shadow-lg border border-pink-200 text-pink-500 hover:text-pink-600 transition-all hover:scale-110 flex items-center justify-center w-12 h-12">
+        <i id="musicIcon" class="fas fa-music text-lg"></i>
+    </button>
 
-  <!-- Canvas Pháo Hoa Giấy -->
-  <canvas id="confettiCanvas"></canvas>
+    <!-- Main Container -->
+    <main class="w-full max-w-xl z-10 relative">
 
-  <!-- MÀN HÌNH 1: NHẬP TÊN -->
-  <div class="screen" id="screen1">
-    <div class="welcome-card">
-      <div class="title-main">💐 Một món quà nhỏ dành cho bạn 💐</div>
-      <div class="subtitle">Nhập tên của bạn để nhận lời chúc 20/10 nhé 💗</div>
-      
-      <input type="text" id="recipientInput" class="input-box" placeholder="Nhập tên..." maxlength="25" autocomplete="off" />
-      
-      <button class="btn-start" onclick="goToScreen2()">Nhận lời chúc 💌</button>
-    </div>
-  </div>
+        <!-- SCREEN 1: INPUT NAME SCREEN -->
+        <section id="screen1" class="glass-card rounded-3xl p-6 sm:p-10 text-center transition-all duration-700 opacity-100 transform scale-100">
+            <div class="inline-block p-3 bg-pink-100 text-pink-500 rounded-full mb-4 animate-bounce">
+                <span class="text-3xl">💐</span>
+            </div>
+            
+            <h1 class="text-2xl sm:text-3xl font-bold text-pink-600 mb-3 tracking-wide">
+                Một món quà nhỏ dành cho bạn
+            </h1>
+            
+            <p class="text-gray-600 mb-8 text-sm sm:text-base">
+                Nhập tên của bạn để nhận lời chúc 20/10 nhé 💗
+            </p>
 
-  <!-- MÀN HÌNH 2: PHONG THƯ -->
-  <div class="screen hidden" id="screen2">
-    <div class="screen-envelope-title" id="greetingTitle">
-      Mai ơi, có một điều đặc biệt dành cho bạn... 💗
-    </div>
+            <form onsubmit="handleNameSubmit(event)" class="space-y-5">
+                <div class="relative max-w-md mx-auto">
+                    <input 
+                        type="text" 
+                        id="recipientName" 
+                        placeholder="Nhập tên của bạn... (ví dụ: Mai)" 
+                        required
+                        maxlength="25"
+                        autocomplete="off"
+                        class="w-full px-6 py-4 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none text-center text-gray-700 text-lg placeholder-pink-300 shadow-inner bg-white/90 transition-all duration-300"
+                    />
+                    <span class="absolute right-4 top-1/2 -translate-y-1/2 text-pink-300 text-xl pointer-events-none">✨</span>
+                </div>
 
-    <div class="envelope-container" id="envelope" onclick="openEnvelope()">
-      <div class="envelope-wrapper">
-        <span class="env-decor env-decor-1">🌸</span>
-        <span class="env-decor env-decor-2">🎁</span>
-        <span class="env-decor env-decor-3">✨</span>
-        <div class="envelope-flap"></div>
-        <div class="paper-preview"></div>
-        <div class="envelope-pocket"></div>
-        <div class="envelope-seal">💗</div>
-      </div>
-    </div>
+                <div>
+                    <button 
+                        type="submit" 
+                        class="btn-cute text-white font-bold px-8 py-4 rounded-2xl text-lg w-full max-w-md text-pink-900 flex items-center justify-center gap-2 mx-auto cursor-pointer">
+                        <span>Nhận lời chúc</span>
+                        <span class="text-xl">💌</span>
+                    </button>
+                </div>
+            </form>
 
-    <div class="click-hint" id="envelopeHint">
-      Có một lá thư dành riêng cho Mai 💌<br>
-      <span style="font-size: 0.85rem; font-weight: normal; color: #888;">Nhấn vào để mở nhé ✨</span>
-    </div>
-  </div>
+            <div class="mt-8 flex justify-center items-center gap-4 text-xs text-pink-400">
+                <span>🌸 Yêu thương</span>
+                <span>•</span>
+                <span>✨ Rạng rỡ</span>
+                <span>•</span>
+                <span>🌷 Hạnh phúc</span>
+            </div>
+        </section>
 
-  <!-- LÁ THƯ CHÍNH -->
-  <div class="letter-modal" id="letterModal">
-    <div class="letter-paper">
-      <span class="letter-corner corner-tl">🌸</span>
-      <span class="letter-corner corner-tr">🌸</span>
-      <span class="letter-corner corner-bl">🎁</span>
-      <span class="letter-corner corner-br">✨</span>
+        <!-- SCREEN 2: ENVELOPE DISPLAY SCREEN (Hidden initially) -->
+        <section id="screen2" class="hidden text-center transition-all duration-700 opacity-0 transform scale-95">
+            
+            <!-- Greeting Header -->
+            <div class="mb-8">
+                <h2 id="personalGreeting" class="text-2xl sm:text-3xl font-bold text-pink-600 drop-shadow-sm mb-2">
+                    <!-- Dynamic text will be inserted here -->
+                </h2>
+                <p class="text-pink-400 text-sm sm:text-base animate-pulse">
+                    Có một lá thư đặc biệt đang chờ bạn đó ✨
+                </p>
+            </div>
 
-      <div class="letter-title" id="letterHeader">Gửi Mai 💐</div>
-      
-      <div class="letter-body" id="letterContent">
-        <!-- Nội dung cập nhật tự động theo tên -->
-      </div>
+            <!-- Envelope Component -->
+            <div class="my-8 py-4">
+                <div class="envelope-wrapper animate-float" id="envelopeWrapper" onclick="openEnvelope()">
+                    <div class="envelope">
+                        <!-- Flap -->
+                        <div class="envelope-flap"></div>
+                        
+                        <!-- Wax Seal Decor -->
+                        <div class="wax-seal">
+                            <i class="fas fa-heart text-xl"></i>
+                        </div>
 
-      <div class="letter-footer">
-        💗 Happy Vietnamese Women's Day 20/10 💗
-      </div>
-      
-      <div style="text-align: center; font-size: 1.8rem; margin-top: 10px;">
-        🎀🧸🌷
-      </div>
-    </div>
-  </div>
+                        <!-- Mini Letter Inside -->
+                        <div class="letter-preview flex flex-col justify-between items-center">
+                            <div class="text-pink-400 text-xs font-bold">20/10 Special</div>
+                            <div class="text-center">
+                                <p class="font-handwriting text-2xl text-pink-600 font-bold" id="letterPreviewName">Gửi Mai</p>
+                                <p class="text-[10px] text-gray-400 mt-1">Chỉ dành riêng cho bạn 🌸</p>
+                            </div>
+                            <div class="text-pink-300 text-xs">💖💖💖</div>
+                        </div>
 
-  <script>
-    // --- 1. DỮ LIỆU & TÊN NGƯỜI NHẬN ---
-    let recipientName = "Mai";
+                        <!-- Envelope Pocket Front -->
+                        <div class="envelope-pocket"></div>
 
-    document.getElementById('recipientInput').focus();
-    document.getElementById('recipientInput').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') goToScreen2();
-    });
+                        <!-- Decorative Floating Badges on Envelope -->
+                        <div class="absolute -top-3 -right-3 z-20 text-2xl animate-bounce" style="animation-duration: 2s;">🎁</div>
+                        <div class="absolute -bottom-2 -left-3 z-20 text-2xl">🌸</div>
+                        <div class="absolute top-1/2 -left-5 z-20 text-xl">✨</div>
+                    </div>
+                </div>
+            </div>
 
-    // --- 2. CHUYỂN MÀN HÌNH ---
-    function goToScreen2() {
-      const inputVal = document.getElementById('recipientInput').value.trim();
-      if (inputVal !== "") {
-        recipientName = inputVal;
-      }
+            <!-- Envelope Instruction Hint -->
+            <div class="space-y-2 mt-6">
+                <p class="text-pink-600 font-semibold text-lg" id="envelopeSubtext">
+                    Có một lá thư dành riêng cho bạn 💌
+                </p>
+                <div class="inline-flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full border border-pink-200 text-pink-500 text-sm shadow-sm">
+                    <span class="inline-block animate-ping rounded-full h-2 w-2 bg-pink-400"></span>
+                    <span>Nhấn vào để mở nhé ✨</span>
+                </div>
+            </div>
+        </section>
 
-      startMusic();
+        <!-- SCREEN 3: FULL LETTER MODAL (Hidden initially) -->
+        <div id="letterModal" class="fixed inset-0 z-40 bg-pink-900/40 backdrop-blur-md flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-700">
+            
+            <div class="relative w-full max-w-lg">
+                
+                <!-- Decorative Side Gifts -->
+                <div class="hidden sm:block absolute -left-16 bottom-10 text-5xl animate-bounce" style="animation-duration: 3s;">
+                    🎁
+                </div>
+                <div class="hidden sm:block absolute -right-16 top-10 text-5xl animate-bounce" style="animation-duration: 2.5s;">
+                    🎀
+                </div>
 
-      document.getElementById('greetingTitle').innerText = `${recipientName} ơi, có một điều đặc biệt dành cho bạn... 💗`;
-      document.getElementById('envelopeHint').innerHTML = `Có một lá thư dành riêng cho ${recipientName} 💌<br><span style="font-size: 0.85rem; font-weight: normal; color: #888;">Nhấn vào để mở nhé ✨</span>`;
+                <!-- Letter Paper Container -->
+                <div id="letterContentCard" class="bg-[#fffdf9] rounded-3xl p-6 sm:p-10 shadow-2xl border-4 border-pink-200 relative overflow-hidden transform scale-90 transition-all duration-500">
+                    
+                    <!-- Floral Corner Decorations -->
+                    <div class="absolute top-2 left-2 text-2xl opacity-80">🌸</div>
+                    <div class="absolute top-2 right-2 text-2xl opacity-80">🎀</div>
+                    <div class="absolute bottom-2 left-2 text-2xl opacity-80">🎁</div>
+                    <div class="absolute bottom-2 right-2 text-2xl opacity-80">🌷</div>
 
-      document.body.style.background = 'var(--bg-gradient-2)';
+                    <!-- Dashed Border inner line -->
+                    <div class="border-2 border-dashed border-pink-200 rounded-2xl p-4 sm:p-6 bg-white/50 max-h-[75vh] overflow-y-auto custom-scroll">
+                        
+                        <!-- Header -->
+                        <div class="text-center mb-6">
+                            <span class="text-xs uppercase tracking-widest text-pink-400 font-bold">Happy Vietnamese Women's Day</span>
+                            <h3 class="text-2xl sm:text-3xl font-extrabold text-pink-600 mt-1 font-handwriting" id="letterHeader">
+                                Gửi Bạn 💐
+                            </h3>
+                            <div class="w-16 h-1 bg-pink-200 rounded-full mx-auto mt-2"></div>
+                        </div>
 
-      const s1 = document.getElementById('screen1');
-      const s2 = document.getElementById('screen2');
+                        <!-- Letter Body Text -->
+                        <div class="space-y-4 text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
+                            <p id="letterPara1">
+                                Nhân ngày 20/10, chúc <span class="userNameText text-pink-600 font-bold">bạn</span> luôn vui vẻ, hạnh phúc và luôn giữ được nụ cười thật xinh. 🌷
+                            </p>
 
-      s1.classList.add('hidden');
-      setTimeout(() => {
-        s1.style.display = 'none';
-        s2.style.display = 'flex';
-        setTimeout(() => {
-          s2.classList.remove('hidden');
-        }, 50);
-      }, 800);
-    }
+                            <p id="letterPara2">
+                                Mong rằng mỗi ngày của <span class="userNameText text-pink-600 font-bold">bạn</span> đều có thật nhiều niềm vui, những điều bất ngờ đáng yêu và thật nhiều yêu thương. 💗
+                            </p>
 
-    // --- 3. MỞ PHONG THƯ ---
-    let isEnvelopeOpened = false;
+                            <p id="letterPara3">
+                                Chúc <span class="userNameText text-pink-600 font-bold">bạn</span> luôn tự tin, luôn tỏa sáng theo cách riêng của mình và gặp thật nhiều điều tốt đẹp trong cuộc sống. ✨
+                            </p>
 
-    function openEnvelope() {
-      if (isEnvelopeOpened) return;
-      isEnvelopeOpened = true;
+                            <p id="letterPara4" class="font-bold text-pink-500">
+                                Chúc <span class="userNameText text-pink-600">bạn</span> một ngày 20/10 thật đặc biệt nhé! 🎁🌸
+                            </p>
+                        </div>
 
-      const env = document.getElementById('envelope');
-      env.classList.add('open');
+                        <!-- Letter Footer -->
+                        <div class="mt-8 text-center pt-4 border-t border-pink-100">
+                            <p class="text-pink-600 font-bold text-base sm:text-lg">
+                                💗 Happy Vietnamese Women's Day 20/10 💗
+                            </p>
+                        </div>
+                    </div>
 
-      // Kích hoạt hiệu ứng mưa tên bay ngược lơ lửng thưa thớt
-      startFloatingNames(recipientName);
+                    <!-- Action Buttons -->
+                    <div class="mt-6 text-center">
+                        <button 
+                            onclick="resetForm()" 
+                            class="bg-pink-100 hover:bg-pink-200 text-pink-700 font-semibold px-6 py-2.5 rounded-full text-sm transition-all flex items-center justify-center gap-2 mx-auto border border-pink-300 shadow-sm active:scale-95">
+                            <i class="fas fa-rotate-left"></i>
+                            <span>Gửi tặng bạn khác 🔄</span>
+                        </button>
+                    </div>
 
-      // Kích hoạt pháo hoa giấy Confetti
-      launchConfetti();
+                </div>
+            </div>
+        </div>
 
-      // Hiển thị modal lá thư
-      setTimeout(() => {
-        document.getElementById('letterHeader').innerText = `Gửi ${recipientName} 💐`;
-        document.getElementById('letterContent').innerText = 
-          `Nhân ngày 20/10, chúc ${recipientName} luôn vui vẻ, hạnh phúc và luôn giữ được nụ cười thật xinh. 🌷\n\n` +
-          `Mong rằng mỗi ngày của ${recipientName} đều có thật nhiều niềm vui, những điều bất ngờ đáng yêu và thật nhiều yêu thương. 💗\n\n` +
-          `Chúc ${recipientName} luôn tự tin, luôn tỏa sáng theo cách riêng của mình và gặp thật nhiều điều tốt đẹp trong cuộc sống. ✨\n\n` +
-          `Chúc ${recipientName} một ngày 20/10 thật đặc biệt nhé! 🎁🌸`;
+    </main>
 
-        document.getElementById('letterModal').classList.add('active');
-      }, 1000);
-    }
+    <!-- JavaScript logic -->
+    <script>
+        let currentUserName = "";
+        let audioContext = null;
+        let isPlayingAudio = false;
+        let melodyInterval = null;
+        let nameRainInterval = null;
 
-    // --- 4. HIỆU ỨNG TÊN BAY NGƯỢC NHƯ MƯA (THƯA THỚT) ---
-    function startFloatingNames(name) {
-      const container = document.getElementById('nameRainContainer');
-      const colors = ['#ffb6c1', '#ffc0cb', '#e6e6fa', '#ffffff', '#ff94a8', '#f8bbd0'];
+        // 1. Particle Simulation Canvas
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
 
-      function createNameItem() {
-        if (!isEnvelopeOpened) return;
+        let particles = [];
+        const particleIcons = ['🌸', '🫧', '💗', '✨', '🎀', '⭐', '🌷'];
 
-        const nameEl = document.createElement('div');
-        nameEl.className = 'floating-name';
-        nameEl.innerText = name;
-
-        const fontSize = Math.random() * 14 + 14; // 14px - 28px
-        const leftPos = Math.random() * 88 + 6; // 6% - 94%
-        const duration = Math.random() * 5 + 7; // 7s - 12s bay nhẹ
-        const maxOpacity = Math.random() * 0.35 + 0.3; // Mờ dịu nhẹ
-        const swayX = (Math.random() - 0.5) * 60;
-        const rotDeg = (Math.random() - 0.5) * 20;
-        const color = colors[Math.floor(Math.random() * colors.length)];
-
-        nameEl.style.fontSize = `${fontSize}px`;
-        nameEl.style.left = `${leftPos}%`;
-        nameEl.style.animationDuration = `${duration}s`;
-        nameEl.style.color = color;
-        nameEl.style.setProperty('--max-opacity', maxOpacity);
-        nameEl.style.setProperty('--sway-x', `${swayX}px`);
-        nameEl.style.setProperty('--rot-deg', `${rotDeg}deg`);
-
-        container.appendChild(nameEl);
-
-        setTimeout(() => {
-          nameEl.remove();
-        }, duration * 1000);
-      }
-
-      // Tạo nhịp sinh tên thưa thớt nhẹ nhàng
-      for (let i = 0; i < 6; i++) {
-        setTimeout(createNameItem, i * 500);
-      }
-      setInterval(createNameItem, 1300);
-    }
-
-    // --- 5. CANVAS HIỆU ỨNG NỀN (BONG BÓNG, HOA, SPARKLE) ---
-    const canvas = document.getElementById('particleCanvas');
-    const ctx = canvas.getContext('2d');
-
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-
-    window.addEventListener('resize', () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    });
-
-    const particles = [];
-    const particleIcons = ['🌸', '🫧', '✨', '💗', '⭐', '🎀'];
-
-    class Particle {
-      constructor() {
-        this.reset();
-      }
-
-      reset() {
-        this.x = Math.random() * width;
-        this.y = Math.random() * height - height;
-        this.type = particleIcons[Math.floor(Math.random() * particleIcons.length)];
-        this.size = Math.random() * 16 + 10;
-        this.speedY = Math.random() * 1.2 + 0.6;
-        this.speedX = Math.sin(Math.random() * Math.PI) * 0.8;
-        this.opacity = Math.random() * 0.6 + 0.3;
-        this.rotation = Math.random() * 360;
-        this.rotSpeed = (Math.random() - 0.5) * 1.5;
-      }
-
-      update() {
-        this.y += this.speedY;
-        this.x += Math.sin(this.y / 30) * 0.5 + this.speedX;
-        this.rotation += this.rotSpeed;
-
-        if (this.y > height + 20) {
-          this.reset();
-          this.y = -20;
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
-      }
 
-      draw() {
-        ctx.save();
-        ctx.translate(this.x, this.y);
-        ctx.rotate((this.rotation * Math.PI) / 180);
-        ctx.globalAlpha = this.opacity;
-        ctx.font = `${this.size}px serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(this.type, 0, 0);
-        ctx.restore();
-      }
-    }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-    for (let i = 0; i < 35; i++) {
-      const p = new Particle();
-      p.y = Math.random() * height;
-      particles.push(p);
-    }
+        class Particle {
+            constructor(x, y) {
+                this.x = x || Math.random() * canvas.width;
+                this.y = y || Math.random() * canvas.height;
+                this.size = Math.random() * 16 + 12;
+                this.speedX = Math.random() * 1.5 - 0.75;
+                this.speedY = Math.random() * -1.5 - 0.5;
+                this.icon = particleIcons[Math.floor(Math.random() * particleIcons.length)];
+                this.opacity = Math.random() * 0.7 + 0.3;
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = (Math.random() - 0.5) * 1.5;
+            }
 
-    function animateParticles() {
-      ctx.clearRect(0, 0, width, height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      requestAnimationFrame(animateParticles);
-    }
-    animateParticles();
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.rotation += this.rotationSpeed;
 
-    // --- 6. PHÁO HOA CONFETTI ---
-    const cCanvas = document.getElementById('confettiCanvas');
-    const cCtx = cCanvas.getContext('2d');
-    cCanvas.width = window.innerWidth;
-    cCanvas.height = window.innerHeight;
+                if (this.y < -30) {
+                    this.y = canvas.height + 20;
+                    this.x = Math.random() * canvas.width;
+                }
+                if (this.x < -30) this.x = canvas.width + 20;
+                if (this.x > canvas.width + 30) this.x = -20;
+            }
 
-    let confettiList = [];
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.rotation * Math.PI) / 180);
+                ctx.globalAlpha = this.opacity;
+                ctx.font = `${this.size}px sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(this.icon, 0, 0);
+                ctx.restore();
+            }
+        }
 
-    function launchConfetti() {
-      const colors = ['#ff758c', '#ff7eb3', '#ffccd5', '#fff0f3', '#e6e6fa'];
-      for (let i = 0; i < 60; i++) {
-        confettiList.push({
-          x: window.innerWidth / 2,
-          y: window.innerHeight / 2 + 50,
-          vx: (Math.random() - 0.5) * 12,
-          vy: (Math.random() - 0.7) * 14,
-          size: Math.random() * 8 + 4,
-          color: colors[Math.floor(Math.random() * colors.length)],
-          alpha: 1,
-          decay: Math.random() * 0.015 + 0.008
-        });
-      }
-      animateConfetti();
-    }
+        function initParticles() {
+            particles = [];
+            const count = Math.min(Math.floor(window.innerWidth / 20), 40);
+            for (let i = 0; i < count; i++) {
+                particles.push(new Particle());
+            }
+        }
 
-    function animateConfetti() {
-      cCtx.clearRect(0, 0, cCanvas.width, cCanvas.height);
-      confettiList.forEach((c, index) => {
-        c.x += c.vx;
-        c.y += c.vy;
-        c.vy += 0.25;
-        c.alpha -= c.decay;
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateParticles);
+        }
 
-        cCtx.save();
-        cCtx.globalAlpha = Math.max(0, c.alpha);
-        cCtx.fillStyle = c.color;
-        cCtx.beginPath();
-        cCtx.arc(c.x, c.y, c.size, 0, Math.PI * 2);
-        cCtx.fill();
-        cCtx.restore();
+        initParticles();
+        animateParticles();
 
-        if (c.alpha <= 0) confettiList.splice(index, 1);
-      });
+        // 2. HIỆU ỨNG MƯA TÊN BAY TỪ DƯỚI LÊN
+        const nameDecorationIcons = ['🌸', '✨', '💗', '🌷', '🎀', '💖'];
 
-      if (confettiList.length > 0) {
-        requestAnimationFrame(animateConfetti);
-      }
-    }
+        function createFloatingName() {
+            if (!currentUserName) return;
 
-    // --- 7. ÂM NHẠC PIANO LULLABY ---
-    let audioCtx = null;
-    let isPlaying = false;
-    let musicInterval = null;
+            const container = document.getElementById('nameRainContainer');
+            const item = document.createElement('div');
+            item.className = 'floating-name-item';
 
-    const notes = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25];
-    const melody = [0, 2, 4, 7, 4, 2, 0, 4, 7, 9, 7, 4, 2, 0];
+            const randomIcon = nameDecorationIcons[Math.floor(Math.random() * nameDecorationIcons.length)];
+            item.innerHTML = `${randomIcon} ${currentUserName} ${randomIcon}`;
 
-    function playPianoNote(freq) {
-      if (!audioCtx) return;
-      try {
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
+            const leftPos = Math.random() * 85 + 5;
+            item.style.left = `${leftPos}%`;
 
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            const fontSize = Math.floor(Math.random() * 12) + 16;
+            item.style.fontSize = `${fontSize}px`;
 
-        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.8);
+            const duration = Math.random() * 3 + 4;
+            item.style.animationDuration = `${duration}s`;
 
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
+            container.appendChild(item);
 
-        osc.start();
-        osc.stop(audioCtx.currentTime + 1.8);
-      } catch (e) {}
-    }
+            setTimeout(() => {
+                if (item && item.parentNode) {
+                    item.parentNode.removeChild(item);
+                }
+            }, duration * 1000);
+        }
 
-    function startMusic() {
-      if (isPlaying) return;
-      if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      }
-      if (audioCtx.state === 'suspended') {
-        audioCtx.resume();
-      }
+        function startNameRain() {
+            stopNameRain();
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createFloatingName();
+                }, i * 300);
+            }
+            nameRainInterval = setInterval(createFloatingName, 450);
+        }
 
-      isPlaying = true;
-      document.getElementById('audioBtn').innerText = '🎵';
+        function stopNameRain() {
+            if (nameRainInterval) {
+                clearInterval(nameRainInterval);
+                nameRainInterval = null;
+            }
+            const container = document.getElementById('nameRainContainer');
+            if (container) {
+                container.innerHTML = '';
+            }
+        }
 
-      let step = 0;
-      musicInterval = setInterval(() => {
-        if (!isPlaying) return;
-        const noteIndex = melody[step % melody.length];
-        playPianoNote(notes[noteIndex]);
-        step++;
-      }, 550);
-    }
+        // 3. Web Audio API Synth Piano
+        function initAudio() {
+            if (!audioContext) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioContext = new AudioContext();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }
 
-    function toggleMusic() {
-      if (isPlaying) {
-        isPlaying = false;
-        clearInterval(musicInterval);
-        document.getElementById('audioBtn').innerText = '🔇';
-      } else {
-        startMusic();
-      }
-    }
+        function playTone(freq, duration, delay = 0) {
+            setTimeout(() => {
+                if (!isPlayingAudio || !audioContext) return;
+                try {
+                    const osc = audioContext.createOscillator();
+                    const gain = audioContext.createGain();
 
-    document.getElementById('audioBtn').addEventListener('click', toggleMusic);
-  </script>
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+
+                    gain.gain.setValueAtTime(0, audioContext.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.08, audioContext.currentTime + 0.1);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
+
+                    osc.connect(gain);
+                    gain.connect(audioContext.destination);
+
+                    osc.start();
+                    osc.stop(audioContext.currentTime + duration);
+                } catch(e) {
+                    console.error(e);
+                }
+            }, delay * 1000);
+        }
+
+        const melodyNotes = [
+            261.63, 329.63, 392.00, 523.25,
+            349.23, 440.00, 523.25, 698.46,
+            392.00, 493.88, 587.33, 783.99,
+            329.63, 392.00, 523.25, 659.25
+        ];
+
+        function startMelodyLoop() {
+            if (melodyInterval) clearInterval(melodyInterval);
+            let index = 0;
+            isPlayingAudio = true;
+            
+            melodyInterval = setInterval(() => {
+                if (!isPlayingAudio) return;
+                const note = melodyNotes[index % melodyNotes.length];
+                playTone(note, 2.5, 0);
+                if (index % 2 === 0) {
+                    playTone(note * 1.25, 2.0, 0.2);
+                }
+                index++;
+            }, 800);
+        }
+
+        function toggleAudio() {
+            const musicIcon = document.getElementById('musicIcon');
+            if (isPlayingAudio) {
+                isPlayingAudio = false;
+                if (melodyInterval) clearInterval(melodyInterval);
+                musicIcon.className = 'fas fa-music-slash text-gray-400';
+            } else {
+                initAudio();
+                isPlayingAudio = true;
+                startMelodyLoop();
+                musicIcon.className = 'fas fa-music text-pink-500 animate-spin';
+                setTimeout(() => {
+                    musicIcon.className = 'fas fa-music text-pink-500';
+                }, 1000);
+            }
+        }
+
+        // 4. Submit Tên & Chuyển màn hình
+        function handleNameSubmit(event) {
+            event.preventDefault();
+            const input = document.getElementById('recipientName');
+            const name = input.value.trim();
+
+            if (!name) return;
+
+            currentUserName = name;
+
+            startNameRain();
+
+            initAudio();
+            if (!isPlayingAudio) {
+                toggleAudio();
+            }
+
+            document.getElementById('personalGreeting').textContent = `${currentUserName} ơi, có một điều đặc biệt dành cho bạn... 💗`;
+            document.getElementById('letterPreviewName').textContent = `Gửi ${currentUserName}`;
+            document.getElementById('envelopeSubtext').textContent = `Có một lá thư dành riêng cho ${currentUserName} 💌`;
+            document.getElementById('letterHeader').textContent = `Gửi ${currentUserName} 💐`;
+
+            const nameElements = document.querySelectorAll('.userNameText');
+            nameElements.forEach(el => el.textContent = currentUserName);
+
+            const screen1 = document.getElementById('screen1');
+            const screen2 = document.getElementById('screen2');
+
+            screen1.classList.add('opacity-0', 'scale-95');
+            
+            setTimeout(() => {
+                screen1.classList.add('hidden');
+                screen2.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    screen2.classList.remove('opacity-0', 'scale-95');
+                    screen2.classList.add('opacity-100', 'scale-100');
+                }, 50);
+            }, 600);
+        }
+
+        // 5. Mở Thư & Pháo hoa
+        function openEnvelope() {
+            const wrapper = document.getElementById('envelopeWrapper');
+            if (wrapper.classList.contains('open')) return;
+
+            wrapper.classList.add('open');
+
+            if (typeof confetti === 'function') {
+                setTimeout(() => {
+                    confetti({
+                        particleCount: 50,
+                        spread: 60,
+                        origin: { y: 0.6 },
+                        colors: ['#ffb6c1', '#ffd1dc', '#fff0f5', '#e1f5fe', '#f3d5ea']
+                    });
+                }, 400);
+            }
+
+            setTimeout(() => {
+                const modal = document.getElementById('letterModal');
+                const card = document.getElementById('letterContentCard');
+
+                modal.classList.remove('opacity-0', 'pointer-events-none');
+                card.classList.remove('scale-90');
+                card.classList.add('scale-100');
+
+                if (typeof confetti === 'function') {
+                    confetti({
+                        particleCount: 80,
+                        spread: 100,
+                        origin: { y: 0.5 },
+                        colors: ['#ff758c', '#ff7eb3', '#fecfef', '#ffffff', '#ffd1dc']
+                    });
+                }
+            }, 1200);
+        }
+
+        // 6. Reset về màn hình ban đầu
+        function resetForm() {
+            stopNameRain();
+
+            const modal = document.getElementById('letterModal');
+            const card = document.getElementById('letterContentCard');
+            const screen1 = document.getElementById('screen1');
+            const screen2 = document.getElementById('screen2');
+            const wrapper = document.getElementById('envelopeWrapper');
+
+            card.classList.remove('scale-100');
+            card.classList.add('scale-90');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+
+            setTimeout(() => {
+                wrapper.classList.remove('open');
+
+                screen2.classList.remove('opacity-100', 'scale-100');
+                screen2.classList.add('opacity-0', 'scale-95');
+
+                setTimeout(() => {
+                    screen2.classList.add('hidden');
+                    document.getElementById('recipientName').value = '';
+                    currentUserName = "";
+                    screen1.classList.remove('hidden');
+
+                    setTimeout(() => {
+                        screen1.classList.remove('opacity-0', 'scale-95');
+                        screen1.classList.add('opacity-100', 'scale-100');
+                    }, 50);
+                }, 500);
+            }, 400);
+        }
+    </script>
 </body>
 </html>
