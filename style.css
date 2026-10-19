@@ -7,11 +7,13 @@
     font-family: 'Dancing Script', cursive;
 }
 
-/* Animated Pastel Background */
+/* Background Nền Hoa & Hộp Quà Hồng Nhạt Sang Trọng */
 body {
-    background: linear-gradient(-45deg, #ffd1dc, #f3e5f5, #e1f5fe, #fff0f5);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
+    background: radial-gradient(circle at center, #fce4ec 0%, #f8bbd0 50%, #f48fb1 100%),
+                linear-gradient(135deg, #f8bbd0 0%, #f48fb1 50%, #f06292 100%);
+    background-blend-mode: overlay;
+    background-size: 200% 200%;
+    animation: gradientBG 12s ease infinite;
     overflow-x: hidden;
     min-height: 100vh;
 }
@@ -45,7 +47,7 @@ body {
     overflow: hidden;
 }
 
-/* Keyframes cho hiệu ứng tên bay từ dưới lên trên header xong biến mất */
+/* Keyframes hiệu ứng tên/chữ bay từ dưới lên */
 @keyframes floatUpPastHeader {
     0% {
         transform: translateY(102vh) translateX(0) scale(0.8) rotate(-4deg);
@@ -59,17 +61,14 @@ body {
         opacity: 1;
     }
     70% {
-        /* Vị trí ngang tầm header */
         transform: translateY(22vh) translateX(-8px) scale(1.08) rotate(-2deg);
         opacity: 1;
     }
     85% {
-        /* Vượt lên trên header */
         transform: translateY(8vh) translateX(5px) scale(1.12) rotate(2deg);
         opacity: 0.7;
     }
     100% {
-        /* Lên hẳn trên header xong biến mất */
         transform: translateY(-4vh) translateX(0) scale(1.18) rotate(0deg);
         opacity: 0;
     }
@@ -88,23 +87,19 @@ body {
         opacity: 1;
     }
     70% {
-        /* Vị trí ngang tầm header */
         transform: translateY(22vh) translateX(8px) scale(1.08) rotate(2deg);
         opacity: 1;
     }
     85% {
-        /* Vượt lên trên header */
         transform: translateY(8vh) translateX(-5px) scale(1.12) rotate(-2deg);
         opacity: 0.7;
     }
     100% {
-        /* Lên hẳn trên header xong biến mất */
         transform: translateY(-4vh) translateX(0) scale(1.18) rotate(0deg);
         opacity: 0;
     }
 }
 
-/* Keyframes cho thẻ tên chính giữa bay lên trên header rồi biến mất */
 @keyframes floatUpHero {
     0% {
         transform: translate(-50%, 0) translateY(100vh) scale(0.85);
@@ -118,17 +113,14 @@ body {
         opacity: 1;
     }
     70% {
-        /* Ngang header */
         transform: translate(-50%, 0) translateY(22vh) scale(1.2);
         opacity: 1;
     }
     85% {
-        /* Bay lên trên header */
         transform: translate(-50%, 0) translateY(8vh) scale(1.25);
         opacity: 0.6;
     }
     100% {
-        /* Hoàn toàn biến mất */
         transform: translate(-50%, 0) translateY(-5vh) scale(1.3);
         opacity: 0;
     }
@@ -179,7 +171,6 @@ body {
     z-index: 10000;
 }
 
-/* Hiệu ứng nhịp đập ngọt ngào cho tên trong thư */
 .userNameText {
     display: inline-block;
     transition: transform 0.3s ease;
@@ -191,7 +182,6 @@ body {
     50% { transform: scale(1.08); text-shadow: 0 0 10px rgba(244, 114, 182, 0.6); }
 }
 
-/* Floating Animation for Envelope */
 @keyframes float {
     0%, 100% { transform: translateY(0px) rotate(0deg); }
     50% { transform: translateY(-12px) rotate(1deg); }
@@ -201,16 +191,14 @@ body {
     animation: float 4s ease-in-out infinite;
 }
 
-/* Glassmorphism Card Style */
 .glass-card {
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 2px solid rgba(255, 255, 255, 0.9);
-    box-shadow: 0 15px 35px rgba(255, 182, 193, 0.3), 0 5px 15px rgba(0, 0, 0, 0.05);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 2px solid rgba(255, 255, 255, 0.95);
+    box-shadow: 0 15px 35px rgba(236, 72, 153, 0.25), 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
-/* Envelope CSS 3D */
 .envelope-wrapper {
     position: relative;
     width: 300px;
@@ -237,7 +225,6 @@ body {
     transition: all 0.5s ease;
 }
 
-/* Envelope Flap */
 .envelope-flap {
     position: absolute;
     top: 0;
@@ -252,7 +239,6 @@ body {
     border-radius: 16px 16px 0 0;
 }
 
-/* Pocket/Front body of envelope */
 .envelope-pocket {
     position: absolute;
     top: 0;
@@ -266,7 +252,6 @@ body {
     border-bottom: 3px solid #ffb6c1;
 }
 
-/* Letter Inside Envelope */
 .letter-preview {
     position: absolute;
     bottom: 12px;
@@ -283,7 +268,6 @@ body {
     border: 2px dashed #ffd1dc;
 }
 
-/* Opened Envelope State */
 .envelope-wrapper.open .envelope-flap {
     transform: rotateX(180deg);
     z-index: 1;
@@ -294,7 +278,6 @@ body {
     z-index: 6;
 }
 
-/* Cute Wax Seal Stamp */
 .wax-seal {
     position: absolute;
     top: 50%;
@@ -318,7 +301,6 @@ body {
     transform: translate(-50%, -20%) scale(0.5);
 }
 
-/* Glowing Button */
 .btn-cute {
     background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%);
     transition: all 0.3s ease;
@@ -334,7 +316,6 @@ body {
     transform: translateY(1px);
 }
 
-/* Custom Scrollbar for Letter Modal */
 .custom-scroll::-webkit-scrollbar {
     width: 6px;
 }
