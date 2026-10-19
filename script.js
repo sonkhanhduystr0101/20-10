@@ -9,7 +9,7 @@ const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 
 let particles = [];
-const particleIcons = ['🌸', '🫧', '💗', '✨', '🎀', '⭐', '🌷'];
+const particleIcons = ['🌸', '🫧', '💗', '✨', '🎀', '⭐', '🌷', '🌺'];
 
 function resizeCanvas() {
     canvas.width = window.innerWidth;
@@ -78,8 +78,8 @@ function animateParticles() {
 initParticles();
 animateParticles();
 
-// 2. HIỆU ỨNG TÊN BAY TỪ DƯỚI LÊN TRÊN HEADER XONG BIẾN MẤT
-const nameDecorationIcons = ['🌸', '✨', '💗', '🌷', '🎀', '💖'];
+// 2. HIỆU ỨNG TÊN BAY TỪ DƯỚI LÊN TRÊN HEADER
+const nameDecorationIcons = ['🌸', '✨', '💗', '🌷', '🎀', '💖', '🌺'];
 let nameTimeouts = [];
 
 function clearNameTimeouts() {
@@ -97,9 +97,8 @@ function getNameRainContainer() {
     return container;
 }
 
-// Thẻ tên chính giữa bay lên nổi bật qua header rồi biến mất
 function createFloatingHeroName() {
-    const displayName = currentUserName || "Bạn";
+    const displayName = currentUserName || "Mẹ Iu";
     const container = getNameRainContainer();
 
     const item = document.createElement('div');
@@ -116,9 +115,8 @@ function createFloatingHeroName() {
     }, 4500);
 }
 
-// Các nhãn tên đồng hành bay từ dưới lên trên header xong biến mất
 function createFloatingName(customLeft = null) {
-    const displayName = currentUserName || "Bạn";
+    const displayName = currentUserName || "Mẹ Iu";
     const container = getNameRainContainer();
 
     const item = document.createElement('div');
@@ -147,17 +145,14 @@ function createFloatingName(customLeft = null) {
     }, duration * 1000);
 }
 
-// Kích hoạt làn sóng tên bay lên qua header rồi biến mất
 function triggerFloatingNames() {
     stopNameRain();
 
-    // 1. Thẻ tên chính giữa bay lên ngay
     const heroTimeout = setTimeout(() => {
         createFloatingHeroName();
     }, 150);
     nameTimeouts.push(heroTimeout);
 
-    // 2. Làn sóng các thẻ tên vệ tinh bay lên trên header xong biến mất
     const positions = [18, 76, 28, 68, 45, 82, 14];
     positions.forEach((pos, idx) => {
         const t = setTimeout(() => {
@@ -270,13 +265,20 @@ function handleNameSubmit(event) {
         toggleAudio();
     }
 
-    document.getElementById('personalGreeting').textContent = `${currentUserName} ơi, có một điều đặc biệt dành cho bạn... 💗`;
-    document.getElementById('letterPreviewName').textContent = `Gửi ${currentUserName}`;
+    document.getElementById('personalGreeting').textContent = `${currentUserName} ơi, có một điều đặc biệt dành cho mẹ... 💗`;
     document.getElementById('envelopeSubtext').textContent = `Có một lá thư dành riêng cho ${currentUserName} 💌`;
+    document.getElementById('letterPreviewName').textContent = `Gửi ${currentUserName}`;
     document.getElementById('letterHeader').textContent = `Gửi ${currentUserName} 💐`;
 
-    const nameElements = document.querySelectorAll('.userNameText');
-    nameElements.forEach(el => el.textContent = currentUserName);
+    // Chèn nguyên văn bức thư của bạn vào đây
+    document.getElementById('letterContainer').innerHTML = `
+        <p class="font-bold text-pink-600 text-lg">Gửi <span class="userNameText">${currentUserName}</span> của con 💐</p>
+        <p>Nhân dịp 20/10, con gửi đến mẹ lá thư nhỏ này cùng với những lời chúc yêu thương nhất. Con chúc mẹ mỗi ngày đều thật vui vẻ, luôn xinh đẹp, mạnh khỏe và hạnh phúc thật nhiều. 🌷</p>
+        <p>Con mong rằng những điều tốt đẹp và hạnh phúc nhất sẽ luôn tìm đến với mẹ, những muộn phiền sẽ ở lại phía sau, để mỗi ngày của mẹ đều là một ngày thật bình yên và nhiều niềm vui. ✨</p>
+        <p>Cảm ơn mẹ vì đã luôn yêu thương, chăm sóc và ở bên con. Con không biết nói những lời thật hay, nhưng con chỉ muốn mẹ biết rằng con yêu mẹ rất nhiều. ❤️</p>
+        <p class="font-bold text-pink-500">20/10 thật vui vẻ nha mẹ iu! 🎉</p>
+        <p class="font-bold text-pink-600 text-right mt-4 text-base">Con iu của mẹ 🥰💐</p>
+    `;
 
     const screen1 = document.getElementById('screen1');
     const screen2 = document.getElementById('screen2');
@@ -290,7 +292,6 @@ function handleNameSubmit(event) {
         setTimeout(() => {
             screen2.classList.remove('opacity-0', 'scale-95');
             screen2.classList.add('opacity-100', 'scale-100');
-            // Bay một đợt tên khi vào màn hình phong thư
             triggerFloatingNames();
         }, 50);
     }, 600);
@@ -302,8 +303,6 @@ function openEnvelope() {
     if (wrapper.classList.contains('open')) return;
 
     wrapper.classList.add('open');
-
-    // Kích hoạt hiệu ứng tên người nhận bay từ dưới lên trên header xong biến mất khi mở phong thư
     triggerFloatingNames();
 
     if (typeof confetti === 'function') {
@@ -325,7 +324,6 @@ function openEnvelope() {
         card.classList.remove('scale-90');
         card.classList.add('scale-100');
 
-        // Kích hoạt đợt tên bay lên rực rỡ vượt qua header khi bức thư bung mở
         triggerFloatingNames();
 
         if (typeof confetti === 'function') {
