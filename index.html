@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Món Quà 20/10 Dành Cho Bạn 🌸</title>
+    <title>Món Quà 20/10 Dành Tặng Mẹ Iu 🌸</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -15,7 +15,7 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS File -->
-    <link rel="stylesheet" href="style.css?v=3">
+    <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body class="flex items-center justify-center min-h-screen p-4 relative">
 
@@ -40,11 +40,11 @@
             </div>
             
             <h1 class="text-2xl sm:text-3xl font-bold text-pink-600 mb-3 tracking-wide">
-                Một món quà nhỏ dành cho bạn
+                Một món quà nhỏ dành cho mẹ iu 💖
             </h1>
             
             <p class="text-gray-600 mb-8 text-sm sm:text-base">
-                Nhập tên của bạn để nhận lời chúc 20/10 nhé 💗
+                Nhập tên của mẹ để nhận bức thư 20/10 nhé 🌸
             </p>
 
             <form onsubmit="handleNameSubmit(event)" class="space-y-5">
@@ -52,9 +52,9 @@
                     <input 
                         type="text" 
                         id="recipientName" 
-                        placeholder="Nhập tên của bạn... (ví dụ: Mai)" 
+                        placeholder="Nhập tên mẹ... (ví dụ: Mẹ iu, Mẹ...)" 
                         required
-                        maxlength="25"
+                        maxlength="40"
                         autocomplete="off"
                         class="w-full px-6 py-4 rounded-2xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none text-center text-gray-700 text-lg placeholder-pink-300 shadow-inner bg-white/90 transition-all duration-300"
                     />
@@ -65,7 +65,7 @@
                     <button 
                         type="submit" 
                         class="btn-cute text-white font-bold px-8 py-4 rounded-2xl text-lg w-full max-w-md text-pink-900 flex items-center justify-center gap-2 mx-auto cursor-pointer">
-                        <span>Nhận lời chúc</span>
+                        <span>Nhận món quà</span>
                         <span class="text-xl">💌</span>
                     </button>
                 </div>
@@ -89,7 +89,7 @@
                     <!-- Dynamic text will be inserted here -->
                 </h2>
                 <p class="text-pink-400 text-sm sm:text-base animate-pulse">
-                    Có một lá thư đặc biệt đang chờ bạn đó ✨
+                    Có một lá thư đặc biệt đang chờ mẹ đó ✨
                 </p>
             </div>
 
@@ -109,8 +109,8 @@
                         <div class="letter-preview flex flex-col justify-between items-center">
                             <div class="text-pink-400 text-xs font-bold">20/10 Special</div>
                             <div class="text-center">
-                                <p class="font-handwriting text-2xl text-pink-600 font-bold" id="letterPreviewName">Gửi Mai</p>
-                                <p class="text-[10px] text-gray-400 mt-1">Chỉ dành riêng cho bạn 🌸</p>
+                                <p class="font-handwriting text-2xl text-pink-600 font-bold" id="letterPreviewName">Gửi Mẹ Iu</p>
+                                <p class="text-[10px] text-gray-400 mt-1">Dành riêng cho mẹ iu 🌸</p>
                             </div>
                             <div class="text-pink-300 text-xs">💖💖💖</div>
                         </div>
@@ -129,7 +129,7 @@
             <!-- Envelope Instruction Hint -->
             <div class="space-y-2 mt-6">
                 <p class="text-pink-600 font-semibold text-lg" id="envelopeSubtext">
-                    Có một lá thư dành riêng cho bạn 💌
+                    Có một lá thư dành riêng cho mẹ 💌
                 </p>
                 <div class="inline-flex items-center gap-2 bg-white/80 px-4 py-2 rounded-full border border-pink-200 text-pink-500 text-sm shadow-sm">
                     <span class="inline-block animate-ping rounded-full h-2 w-2 bg-pink-400"></span>
@@ -167,28 +167,14 @@
                         <div class="text-center mb-6">
                             <span class="text-xs uppercase tracking-widest text-pink-400 font-bold">Happy Vietnamese Women's Day</span>
                             <h3 class="text-2xl sm:text-3xl font-extrabold text-pink-600 mt-1 font-handwriting" id="letterHeader">
-                                Gửi Bạn 💐
+                                Gửi Mẹ Iu Của Con 💐
                             </h3>
                             <div class="w-16 h-1 bg-pink-200 rounded-full mx-auto mt-2"></div>
                         </div>
 
                         <!-- Letter Body Text -->
-                        <div class="space-y-4 text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
-                            <p id="letterPara1">
-                                Nhân ngày 20/10, chúc <span class="userNameText text-pink-600 font-bold">bạn</span> luôn vui vẻ, hạnh phúc và luôn giữ được nụ cười thật xinh. 🌷
-                            </p>
-
-                            <p id="letterPara2">
-                                Mong rằng mỗi ngày của <span class="userNameText text-pink-600 font-bold">bạn</span> đều có thật nhiều niềm vui, những điều bất ngờ đáng yêu và thật nhiều yêu thương. 💗
-                            </p>
-
-                            <p id="letterPara3">
-                                Chúc <span class="userNameText text-pink-600 font-bold">bạn</span> luôn tự tin, luôn tỏa sáng theo cách riêng của mình và gặp thật nhiều điều tốt đẹp trong cuộc sống. ✨
-                            </p>
-
-                            <p id="letterPara4" class="font-bold text-pink-500">
-                                Chúc <span class="userNameText text-pink-600">bạn</span> một ngày 20/10 thật đặc biệt nhé! 🎁🌸
-                            </p>
+                        <div id="letterContainer" class="space-y-4 text-gray-700 text-sm sm:text-base leading-relaxed font-medium">
+                            <!-- Nội dung lá thư sẽ chèn từ script.js -->
                         </div>
 
                         <!-- Letter Footer -->
@@ -205,7 +191,7 @@
                             onclick="resetForm()" 
                             class="bg-pink-100 hover:bg-pink-200 text-pink-700 font-semibold px-6 py-2.5 rounded-full text-sm transition-all flex items-center justify-center gap-2 mx-auto border border-pink-300 shadow-sm active:scale-95">
                             <i class="fas fa-rotate-left"></i>
-                            <span>Gửi tặng bạn khác 🔄</span>
+                            <span>Xem lại bức thư 🔄</span>
                         </button>
                     </div>
 
@@ -215,6 +201,6 @@
 
     </main>
     <!-- Custom JavaScript Logic -->
-    <script src="script.js?v=3"></script>
+    <script src="script.js?v=5"></script>
 </body>
 </html>
